@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   BarChart,
   Bar,
@@ -17,6 +18,7 @@ import {
   Heart,
   Settings,
   Bell,
+  LogOut,
 } from "lucide-react";
 
 const data = [
@@ -30,36 +32,51 @@ const data = [
 ];
 
 export default function Dashboard() {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-gray-100">
       {/* Sidebar */}
       <aside className="bg-black text-white w-full lg:w-64 p-6 space-y-6 lg:min-h-screen">
         <div className="text-2xl font-semibold">Trusty Dashboard</div>
         <nav className="space-y-4">
-          <NavItem href="/dashboard" icon={<Home />} label="Dashboard" active />
+          <NavItem href="/dashboard" icon={<Home />} label="Dashboard" />
+          <NavItem href="/pages/admin" icon={<Users />} label="Admins" />
           <NavItem href="/pages/volunteers" icon={<Users />} label="Volunteers" />
           <NavItem href="/pages/programs" icon={<ClipboardList />} label="Programs" />
-          <NavItem href="/pages/beneficiaries" icon={<Heart />} label="Beneficiaries" />
-          <NavItem href="/settings" icon={<Settings />} label="Settings" />
+          <NavItem
+            href="/pages/beneficiaries"
+            icon={<Heart />}
+            label="Beneficiaries"
+            active
+          />
+
+          <div
+            onClick={() => {
+              router.push("/");
+            }}
+            className="flex items-center gap-3 px-4 py-2 rounded-lg cursor-pointer transition hover:bg-gray-700"
+          >
+            <LogOut />
+            <span>Logout</span>
+          </div>
         </nav>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-6 text-gray-700">
-        {/* Header */}
         <header className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-bold">Trusty Dashboard</h1>
+          <h1 className="text-xl font-bold">Trustee Dashboard</h1>
           <div className="flex items-center gap-4">
             <Bell className="text-black" />
             <img
-              src="https://randomuser.me/api/portraits/women/44.jpg"
+              src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
               alt="Profile"
-              className="w-10 h-10 rounded-full"
+              className="w-10 h-10 rounded-full cursor-pointer"
+              onClick={() => router.push("/pages/profile")}
             />
           </div>
         </header>
 
-        {/* Dashboard Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           <div className="bg-orange-500 text-white p-6 rounded-xl">
             <p className="text-3xl font-bold">1,250</p>
@@ -67,7 +84,9 @@ export default function Dashboard() {
           </div>
 
           <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-lg font-semibold mb-2 text-gray-700">Number of Programs</h2>
+            <h2 className="text-lg font-semibold mb-2 text-gray-700">
+              Number of Programs
+            </h2>
             <div className="space-y-2">
               <ProgramStatus label="Program A" />
               <ProgramStatus label="Program B" status="In Progress" />
@@ -76,7 +95,9 @@ export default function Dashboard() {
           </div>
 
           <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-lg font-semibold mb-2 text-gray-700">Comparison of Boys and Girls</h2>
+            <h2 className="text-lg font-semibold mb-2 text-gray-700">
+              Comparison of Boys and Girls
+            </h2>
             <div className="flex justify-between text-sm">
               <div>
                 <p className="font-bold text-orange-500">1,200</p>
@@ -90,10 +111,11 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Chart and Beneficiaries */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-lg font-semibold mb-4 text-gray-700">Monthly Volunteers</h2>
+            <h2 className="text-lg font-semibold mb-4 text-gray-700">
+              Monthly Volunteers
+            </h2>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={data}>
                 <XAxis dataKey="name" />
@@ -106,7 +128,9 @@ export default function Dashboard() {
 
           <div className="bg-white p-6 rounded-xl shadow flex flex-col justify-between">
             <div>
-              <h2 className="text-lg font-semibold mb-2 text-gray-700">Number of Beneficiaries</h2>
+              <h2 className="text-lg font-semibold mb-2 text-gray-700">
+                Number of Beneficiaries
+              </h2>
               <p className="text-3xl font-bold text-gray-700">3,254</p>
             </div>
             <p className="text-green-600 font-medium">↑ 7.2%</p>

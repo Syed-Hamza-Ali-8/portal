@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { JSX } from 'react';
 
 const Login = () => {
   const router = useRouter();
@@ -21,12 +20,14 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { name, roll, email, password } = formData;
+    const { name, email, password } = formData;
 
-    if (!name || !roll || !email || !password) {
+    if (!name || !email || !password) {
       alert("Please fill in all fields.");
       return;
     }
+
+    localStorage.setItem("trusteeData", JSON.stringify(formData));
 
     router.push("/pages");
   };
@@ -36,7 +37,7 @@ const Login = () => {
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
         <h2 className="text-center text-lg text-gray-600">Welcome to</h2>
         <h1 className="text-center text-2xl font-semibold text-gray-800 mb-6">
-          Volunteer Login
+          Trustee Login
         </h1>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -46,14 +47,6 @@ const Login = () => {
             value={formData.name}
             onChange={handleChange}
             placeholder="Full Name"
-            className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 placeholder:text-gray-700"
-          />
-          <input
-            type="text"
-            name="roll"
-            value={formData.roll}
-            onChange={handleChange}
-            placeholder="Roll Number"
             className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 placeholder:text-gray-700"
           />
           <input
@@ -74,10 +67,6 @@ const Login = () => {
           />
 
           <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center space-x-2">
-              <input type="checkbox" className="form-checkbox" />
-              <span className="text-gray-700">Remember me</span>
-            </label>
             <a href="#" className="text-orange-500 hover:underline">
               Forgot Password?
             </a>

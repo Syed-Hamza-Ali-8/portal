@@ -33,8 +33,8 @@ const VolunteersPage = () => {
                 <td className="px-6 py-4 font-medium text-gray-900">
                   {volunteer.name}
                 </td>
-                <td className="px-6 py-4">{volunteer.joined}</td>
-                <td className="px-6 py-4">{volunteer.programs}</td>
+                <td className="px-6 py-4 text-gray-800">{volunteer.joined}</td>
+                <td className="px-6 py-4 text-gray-800">{volunteer.programs}</td>
                 <td className="px-6 py-4">
                   <span className="inline-block px-2 py-1 text-xs text-white bg-orange-500 rounded-full">
                     Active
