@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import { Sidebar } from "@/app/components/SideBar";
+import React, { useState } from "react";
 
 const beneficiaries = [
   {
@@ -30,7 +31,10 @@ const beneficiaries = [
 ];
 
 const BeneficiariesPage = () => {
+  const [collapsed, setCollapsed] = useState(false);
   return (
+    <>
+    <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
     <main className="min-h-screen bg-gray-50 px-6 py-12">
       <div className="max-w-5xl mx-auto text-center">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
@@ -56,6 +60,7 @@ const BeneficiariesPage = () => {
         </div>
       </div>
     </main>
+    </>
   );
 };
 

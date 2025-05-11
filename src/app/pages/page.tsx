@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   BarChart,
@@ -11,15 +10,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import {
-  Home,
-  Users,
-  ClipboardList,
-  Heart,
-  Settings,
-  Bell,
-  LogOut,
-} from "lucide-react";
+import { Bell } from "lucide-react";
+import { Sidebar } from "../components/SideBar";
 
 const data = [
   { name: "Jan", uv: 850 },
@@ -33,39 +25,26 @@ const data = [
 
 export default function Dashboard() {
   const router = useRouter();
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-gray-100">
-      {/* Sidebar */}
-      <aside className="bg-black text-white w-full lg:w-64 p-6 space-y-6 lg:min-h-screen">
-        <div className="text-2xl font-semibold">Trusty Dashboard</div>
-        <nav className="space-y-4">
-          <NavItem href="/dashboard" icon={<Home />} label="Dashboard" />
-          <NavItem href="/pages/admin" icon={<Users />} label="Admins" />
-          <NavItem href="/pages/volunteers" icon={<Users />} label="Volunteers" />
-          <NavItem href="/pages/programs" icon={<ClipboardList />} label="Programs" />
-          <NavItem
-            href="/pages/beneficiaries"
-            icon={<Heart />}
-            label="Beneficiaries"
-            active
-          />
+    <div className="flex flex-col min-h-screen">
+      {/* Sidebar for small screens */}
+      <div className="lg:flex">
+        <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+      </div>
 
-          <div
-            onClick={() => {
-              router.push("/");
-            }}
-            className="flex items-center gap-3 px-4 py-2 rounded-lg cursor-pointer transition hover:bg-gray-700"
-          >
-            <LogOut />
-            <span>Logout</span>
-          </div>
-        </nav>
-      </aside>
-
-      <main className="flex-1 p-6 text-gray-700">
+      {/* Main Content */}
+      <div
+        className={`flex-1 bg-gray-100 p-6 text-gray-700 transition-all duration-300 ${
+          collapsed ? "lg:ml-[80px]" : "lg:ml-[250px]"
+        }`}
+      >
+        {/* Header */}
         <header className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-bold">Trustee Dashboard</h1>
+        <h1 className="text-[32px] font-semibold text-[#1A1A1A] max-sm:text-2xl">
+            TRUSTEE DASHBOARD - COMBINE FOUNDATION
+          </h1>
           <div className="flex items-center gap-4">
             <Bell className="text-black" />
             <img
@@ -77,7 +56,8 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           <div className="bg-orange-500 text-white p-6 rounded-xl">
             <p className="text-3xl font-bold">1,250</p>
             <p>Volunteers this month</p>
@@ -111,7 +91,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Graphs & Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Monthly Volunteers Chart */}
           <div className="bg-white p-6 rounded-xl shadow">
             <h2 className="text-lg font-semibold mb-4 text-gray-700">
               Monthly Volunteers
@@ -126,6 +108,7 @@ export default function Dashboard() {
             </ResponsiveContainer>
           </div>
 
+          {/* Number of Beneficiaries */}
           <div className="bg-white p-6 rounded-xl shadow flex flex-col justify-between">
             <div>
               <h2 className="text-lg font-semibold mb-2 text-gray-700">
@@ -136,34 +119,12 @@ export default function Dashboard() {
             <p className="text-green-600 font-medium">↑ 7.2%</p>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
 
-const NavItem = ({
-  href,
-  icon,
-  label,
-  active,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  active?: boolean;
-}) => (
-  <Link href={href}>
-    <div
-      className={`flex items-center gap-3 px-4 py-2 rounded-lg cursor-pointer transition ${
-        active ? "bg-gray-800" : "hover:bg-gray-700"
-      }`}
-    >
-      {icon}
-      <span>{label}</span>
-    </div>
-  </Link>
-);
-
+// ProgramStatus Component
 const ProgramStatus = ({
   label,
   status,
